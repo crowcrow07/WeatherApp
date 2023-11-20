@@ -4,26 +4,14 @@ import { Text, View, ScrollView } from "react-native";
 import WeatherInfo from "./components/WeatherInfo";
 import getLocation from "./util/getLocation";
 import reverseGeocode from "./util/reverseGeocode";
+import fetchWeather from "./util/fetchWeather";
 
-import { API_KEY } from "@env";
 import { styles } from "./style";
 
 export default function App() {
   const [city, setCity] = useState("Loading...");
   const [days, setDays] = useState([{ temp: 0, weather: "sunny" }]);
   const [ok, setOk] = useState(true);
-
-  const fetchWeather = async (latitude, longitude) => {
-    const response = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}`
-    );
-    const json = await response.json();
-
-    return {
-      temp: Math.round(json.main.temp - 273.15),
-      weather: json.weather[0].main,
-    };
-  };
 
   const getWeather = async () => {
     try {

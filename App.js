@@ -1,9 +1,9 @@
-import * as Location from "expo-location";
 import { useEffect, useState } from "react";
 import { Text, View, ScrollView } from "react-native";
 
 import WeatherInfo from "./components/WeatherInfo";
 import getLocation from "./util/getLocation";
+import reverseGeocode from "./util/reverseGeocode";
 
 import { API_KEY } from "@env";
 import { styles } from "./style";
@@ -12,14 +12,6 @@ export default function App() {
   const [city, setCity] = useState("Loading...");
   const [days, setDays] = useState([{ temp: 0, weather: "sunny" }]);
   const [ok, setOk] = useState(true);
-
-  const reverseGeocode = async (latitude, longitude) => {
-    const location = await Location.reverseGeocodeAsync(
-      { latitude, longitude },
-      { useGoogleMaps: false }
-    );
-    return location[0].region;
-  };
 
   const fetchWeather = async (latitude, longitude) => {
     const response = await fetch(

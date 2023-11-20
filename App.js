@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Text, View, ScrollView } from "react-native";
 
 import WeatherInfo from "./components/WeatherInfo";
+import getLocation from "./util/getLocation";
 
 import { API_KEY } from "@env";
 import { styles } from "./style";
@@ -11,19 +12,6 @@ export default function App() {
   const [city, setCity] = useState("Loading...");
   const [days, setDays] = useState([{ temp: 0, weather: "sunny" }]);
   const [ok, setOk] = useState(true);
-
-  const getLocation = async () => {
-    const { granted } = await Location.requestForegroundPermissionsAsync();
-    if (!granted) {
-      setOk(false);
-    }
-
-    const {
-      coords: { latitude, longitude },
-    } = await Location.getCurrentPositionAsync({ accuracy: 5 });
-
-    return { latitude, longitude };
-  };
 
   const reverseGeocode = async (latitude, longitude) => {
     const location = await Location.reverseGeocodeAsync(
@@ -47,7 +35,7 @@ export default function App() {
 
   const getWeather = async () => {
     try {
-      const { latitude, longitude } = await getLocation();
+      const { latitude, longitude } = await getLocation(setOk);
       const city = await reverseGeocode(latitude, longitude);
       const weatherInfo = await fetchWeather(latitude, longitude);
 

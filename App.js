@@ -7,7 +7,7 @@ import WeatherInfo from "./components/WeatherInfo";
 import { API_KEY } from "@env";
 import { styles } from "./style";
 
-const App = () => {
+export default function App() {
   const [city, setCity] = useState("Loading...");
   const [days, setDays] = useState([{ temp: 0, weather: "sunny" }]);
   const [ok, setOk] = useState(true);
@@ -77,6 +77,4 @@ const App = () => {
       </ScrollView>
     </View>
   );
-};
-
-export default App;
+}
